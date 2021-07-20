@@ -28,7 +28,7 @@ __init() {
 
 _ssh_get_socket_dir() {
 	if ! mkdir -p "$__ssh_socket_dir" &> /dev/null; then
-		error "Could not create $__ssh_socket_dir"
+		log_error "Could not create $__ssh_socket_dir"
 		return 1
 	fi
 
