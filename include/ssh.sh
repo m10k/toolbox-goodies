@@ -56,19 +56,18 @@ _ssh_tunnel_ctrl_socket_name() {
 }
 
 _ssh_proxy_ctrl_socket_name() {
-	local host
-	local port
+	local proxy="$1"
+	local user="$2"
+	local host="$3"
+	local port="$4"
 
 	local sockdir
-
-	host="$1"
-	port="$2"
 
 	if ! sockdir=$(_ssh_get_socket_dir); then
 		return 1
 	fi
 
-	echo "$sockdir/proxy-$host-$port.sock"
+	echo "$sockdir/proxy-$proxy-$user-$host-$port.sock"
 	return 0
 }
 
@@ -167,7 +166,8 @@ ssh_proxy_open() {
 	addrspec="$local_addr:$local_port"
 	sshtarget="$proxy_user@$proxy_host"
 
-	if ! ctrl_sock=$(_ssh_proxy_ctrl_socket_name "$local_addr" "$local_port"); then
+	if ! ctrl_sock=$(_ssh_proxy_ctrl_socket_name "$proxy_host" "$proxy_user" \
+						     "$local_addr" "$local_port"); then
 		return 1
 	fi
 
@@ -199,6 +199,50 @@ ssh_close() {
 	if ! ssh -S "$ctrlsock" -O exit "$hostspec" &> /dev/null; then
 		return 1
 	fi
+
+	return 0
+}
+
+ssh_tunnel_list() {
+	local sockdir
+	local socket
+
+	if ! sockdir=$(_ssh_get_socket_dir); then
+		return 1
+	fi
+
+	while read -r socket; do
+		local tunnel
+
+		tunnel="${socket##*/}"
+		tunnel="${tunnel%.sock}"
+		tunnel="${tunnel#tunnel-}"
+
+		echo "${tunnel//-/ }"
+	done < <(find "$sockdir" -mindepth 1 -maxdepth 1 \
+		      -iname "tunnel-*.sock")
+
+	return 0
+}
+
+ssh_proxy_list() {
+	local sockdir
+	local socket
+
+	if ! sockdir=$(_ssh_get_socket_dir); then
+		return 1
+	fi
+
+	while read -r socket; do
+		local proxy
+
+		proxy="${socket##*/}"
+		proxy="${proxy%.sock}"
+		proxy="${proxy#proxy-}"
+
+		echo "${proxy//-/ }"
+	done < <(find "$sockdir" -mindepth 1 -maxdepth 1 \
+		      -iname "proxy-*.sock")
 
 	return 0
 }
