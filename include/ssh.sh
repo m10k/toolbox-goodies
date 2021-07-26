@@ -77,13 +77,13 @@ _ssh_make_handle() {
 
 	local handle
 
-	if ! handle=$(base64 <<< "$ctrlsock" 2>/dev/null); then
+	if ! handle=$(base64 -w 0 <<< "$ctrlsock" 2>/dev/null); then
 		return 1
 	fi
 
 	handle+=":"
 
-	if ! handle+=$(base64 <<< "$hostspec" 2>/dev/null); then
+	if ! handle+=$(base64 -w 0 <<< "$hostspec" 2>/dev/null); then
 		return 1
 	fi
 
