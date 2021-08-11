@@ -1,0 +1,16 @@
+Source: toolbox-goodies
+Priority: optional
+Maintainer: Matthias Kruk <m@m10k.eu>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Section: shells
+Homepage: https://m10k.eu/toolbox
+
+Package: toolbox
+Section: shells
+Architecture: all
+Depends: toolbox, openssh-client, ${misc:Depends}
+Description: Nice-to-have toolbox modules
+ Additional modules that help perform common tasks from the shell.
+ This package includes the these modules:
+  - ssh
