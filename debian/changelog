@@ -3,4 +3,4 @@ toolbox-goodies (0.1-1) unstable; urgency=medium
   * New modules:
     - ssh: Module for ssh-based proxies and tunnels
 
- -- Matthias Kruk <m@m10k.eu>  Wed, 11 Aug 2021 15:11:13 +0900
+ -- Matthias Kruk <m@m10k.eu>  Mon, 24 Jan 2022 12:00:43 +0900
