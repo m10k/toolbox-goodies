@@ -1,4 +1,4 @@
-PHONY = install uninstall test deb
+PHONY = install uninstall test
 
 ifeq ($(PREFIX), )
 	PREFIX = /usr
@@ -11,15 +11,13 @@ clean:
 test:
 
 install:
-	chown -R root.root include/*.sh
-	chmod -R 644 include/*.sh
+	chown -R root.root include
+	find include -type d -exec chmod 755 {} \;
+	find include -type f -exec chmod 644 {} \;
 	mkdir -p $(DESTDIR)$(PREFIX)/share/toolbox/include
-	cp -a include/ssh.sh $(DESTDIR)$(PREFIX)/share/toolbox/include/.
+	cp -a include/* $(DESTDIR)$(PREFIX)/share/toolbox/include/.
 
 uninstall:
 	rm $(DESTDIR)$(PREFIX)/share/toolbox/include/ssh.sh
-
-deb:
-	dpkg-buildpackage --no-sign
 
 .PHONY: $(PHONY)
