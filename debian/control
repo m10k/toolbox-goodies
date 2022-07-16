@@ -9,7 +9,7 @@ Homepage: https://m10k.eu/toolbox
 Package: toolbox-goodies
 Section: shells
 Architecture: all
-Depends: toolbox, openssh-client
+Depends: toolbox, openssh-client, strongswan-pki
 Description: Nice-to-have toolbox modules
  Additional modules that help perform common tasks from the shell.
  This package includes the these modules:
